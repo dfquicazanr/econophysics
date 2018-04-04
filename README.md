@@ -7,6 +7,8 @@ This code is using open MP for optimization, run it like:
 
 ## Analyzer
 
+This gives the Gini and Shanon Entropy of the analyzed data
+
 #### Linux
 
 `$ ./a.out 1 "file_to_analyze.extension"`

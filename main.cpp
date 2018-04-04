@@ -7,7 +7,7 @@ using namespace std;
 char *p;
 
 void executeSecondExercise(char* argv[]){
-    Analyzer analyzer(argv[1]);
+    Analyzer analyzer(argv[2]);
     cout << "Gini: \t\t" << analyzer.getGini() << endl;
     cout << "Entropy10: \t" << analyzer.getEntropy(10) << endl;
     cout << "Entropy20: \t" << analyzer.getEntropy(20) << endl;
@@ -15,12 +15,12 @@ void executeSecondExercise(char* argv[]){
 
 void executeThirdExercise(char* argv[]) {
     Exchanger exchanger(1000, 1000, 100000, 10000);
-    switch (strtol(argv[1], &p, 10)){
+    switch (strtol(argv[2], &p, 10)){
         case 1:
             exchanger.setExchangeType(ExchangeType::DRAGULESCU_YAKOVENKO);
             break;
         case 2:
-            switch (strtol(argv[2], &p, 10)){
+            switch (strtol(argv[3], &p, 10)){
                 case 1:
                     exchanger.setToChakrabortiChakrabartiExchange(0.0);
                     break;
@@ -44,6 +44,17 @@ void executeThirdExercise(char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-    executeThirdExercise(argv);
+    switch (strtol(argv[1], &p, 10)) {
+        case 1:
+            executeSecondExercise(argv);
+            break;
+        case 2:
+            executeThirdExercise(argv);
+            break;
+        default:
+            cout << "Enter all the parameters";
+            break;
+    }
+
 }
 

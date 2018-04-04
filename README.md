@@ -5,35 +5,35 @@ This code is using open MP for optimization, run it like:
 
 `$ g++ main.cpp Analyzer.cpp Exchanger.cpp -fopenmp`
 
-##Analyzer
+## Analyzer
 
-####Linux
+#### Linux
 
 `$ ./a.out 1 "file_to_analyze.extension"`
 
-####Windows
+#### Windows
 
 `$ a.exe 1 "file_to_analyze.extension"`
 
-##Exchange generators
+## Exchange generators
 
-###Dragulescu-Yakovenko exchange
+### Dragulescu-Yakovenko exchange
 
-####Linux
+#### Linux
 
 `$ ./a.out 2 1 > file.dat`
 
-####Windows
+#### Windows
 
 `$ a.exe 2 1 > file.dat`
 
-###Chakraborti-Chakrabarti exchange
+### Chakraborti-Chakrabarti exchange
 
-####Linux
+#### Linux
 
 `$ ./a.out 2 2 > file.dat`
 
-####Windows
+#### Windows
 
 `$ a.exe 2 2 > file.dat`
 

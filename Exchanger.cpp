@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstring>
 #include <omp.h>
+#include <algorithm>
 #include "Exchanger.h"
 #include "Analyzer.h"
 
@@ -32,13 +33,14 @@ void Exchanger::setToChakrabortiChakrabartiExchange(double lambda){
     Exchanger::lambda = lambda;
 }
 
+void Exchanger::setToBouchardMezardExchange(double J) {
+    exchangeType = ExchangeType::BOUCHARD_MEZARD;
+    Exchanger::J = J;
+}
+
 void Exchanger::dragulescuYakovenkoStep(double data[]) {
     int i = int((double) rand() / RAND_MAX * size);
     int j = int((double) rand() / RAND_MAX * size);
-    exchangeDragulescuYakovenko(data, i, j);
-}
-
-void Exchanger::exchangeDragulescuYakovenko(double data[], int i, int j) {
     double nu = (double) rand() / RAND_MAX;
     double dm = nu * (data[i] + data[j]) / 2.0;
     if (data[i] - dm > 0){
@@ -47,13 +49,10 @@ void Exchanger::exchangeDragulescuYakovenko(double data[], int i, int j) {
     }
 }
 
+
 void Exchanger::chakrabortiChakrabartiStep(double *data) {
     int i = int((double) rand() / RAND_MAX * size);
     int j = int((double) rand() / RAND_MAX * size);
-    exchangeChakrabortiChakrabarti(data, i, j);
-}
-
-void Exchanger::exchangeChakrabortiChakrabarti(double *data, int i, int j) {
     double nu = (double) rand() / RAND_MAX;
     double dmi = nu * (1.0 - lambda) * (data[i] + data[j]);
     double dmj = (1.0 - nu) * (1.0 - lambda) * (data[i] + data[j]);
@@ -61,14 +60,38 @@ void Exchanger::exchangeChakrabortiChakrabarti(double *data, int i, int j) {
     data[j] = lambda * data[j] + dmj;
 }
 
+void Exchanger::bouchardMezardStep(double data[]) {
+    double averageWealth = 0.0;
+    int i = int((double) rand() / RAND_MAX * size);
+    int j = int((double) rand() / RAND_MAX * size);
+    for (int k = 0; k < size; ++k) averageWealth += data[k];
+    averageWealth /= double(size);
+    double nu = (double) rand() / RAND_MAX - 0.5;
+    double dm = J * (averageWealth - data[i]) + nu * data[i];
+    data[i] -= dm;
+    data[j] += dm;
+}
+
+/*
+void Exchanger::bouchardMezardStep(double data[]) {
+    double averageWealth = 0.0;
+    for (int i = 0; i < size; ++i) averageWealth += data[i];
+    averageWealth /= double(size);
+    int i;
+#pragma omp parallel shared(data) private(i)
+    {
+#pragma omp for schedule(dynamic) nowait
+        for (i = 0; i < size; ++i) {
+            double nu = (double) rand() / RAND_MAX - 0.5;
+            data[i] += J * (averageWealth - data[i]) + nu * data[i];
+        }
+    }
+}*/
+
 void Exchanger::printArray(double *data, int lenght) {
     for (int i = 0; i < lenght; ++i) {
         cout << data[i] << endl;
     }
-}
-
-double *Exchanger::getMoney() const {
-    return money;
 }
 
 void Exchanger::execute() {
@@ -93,14 +116,25 @@ void Exchanger::execute() {
                         chakrabortiChakrabartiStep(data);
                     }
                     break;
+                case BOUCHARD_MEZARD:
+                    for (int j = 0; j < steps; ++j) {
+                        bouchardMezardStep(data);
+                    }
+                    break;
                 default:
                     break;
             }
 
+            sort(data, data + size, greater<double>());
+
             for (int i1 = 0; i1 < size; ++i1) {
                 exportMoney[size * i + i1] += data[i1];
+                avMoney[i1] += data[i1];
             }
         }
+    }
+    for (int i1 = 0; i1 < size; ++i1) {
+        avMoney[i1] = avMoney[i1] / double(repetitions);
     }
 }
 
@@ -108,6 +142,9 @@ double *Exchanger::getFinalMoney() const {
     return exportMoney;
 }
 
+double *Exchanger::getAvMoney() const {
+    return avMoney;
+}
 
 
 

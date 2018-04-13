@@ -1,7 +1,7 @@
 # Econophysics
 Generators and analyzers for econophysics
 
-This code is using open MP for optimization, run it like:
+This code is using [OpenMP](http://www.openmp.org/) for optimization, run it like:
 
 `$ g++ main.cpp Analyzer.cpp Exchanger.cpp -fopenmp`
 

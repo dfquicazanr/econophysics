@@ -17,7 +17,7 @@ void executeThirdExercise(char* argv[]) {
     Exchanger exchanger(1000, 1000, 100000, 10000);
     switch (strtol(argv[2], &p, 10)){
         case 1:
-            exchanger.setExchangeType(ExchangeType::DRAGULESCU_YAKOVENKO);
+            exchanger.setToDragulescuYakovenkoExchange();
             break;
         case 2:
             switch (strtol(argv[3], &p, 10)){
@@ -35,12 +35,29 @@ void executeThirdExercise(char* argv[]) {
                     break;
             }
             break;
+        case 3:
+            switch (strtol(argv[3], &p, 10)){
+                case 1:
+                    exchanger.setToBouchardMezardExchange(0.0);
+                    break;
+                case 2:
+                    exchanger.setToBouchardMezardExchange(0.3);
+                    break;
+                case 3:
+                    exchanger.setToBouchardMezardExchange(0.7);
+                    break;
+                default:
+                    exchanger.setToBouchardMezardExchange(0.0);
+                    break;
+            }
+            break;
         default:
-            exchanger.setExchangeType(ExchangeType::DRAGULESCU_YAKOVENKO);
+            exchanger.setToDragulescuYakovenkoExchange();
             break;
     }
     exchanger.execute();
-    exchanger.printArray(exchanger.getFinalMoney(), 1000 * 10000);
+    //exchanger.printArray(exchanger.getFinalMoney(), 1000 * 10000);
+    exchanger.printArray(exchanger.getAvMoney(), 1000);
 }
 
 int main(int argc, char* argv[]) {

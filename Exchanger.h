@@ -21,31 +21,35 @@ private:
     int steps;
     int repetitions;
     double* money = new double[size];
+    double* avMoney = new double[size];
     double* exportMoney = new double[size * repetitions];
     double totalMoney;
     double averageMoney;
     ExchangeType exchangeType;
 
-    // Chakraborti Chakrabarti Exchange Variables
+    // Chakraborti-Chakrabarti Exchange Variables
     double lambda;
+
+    // Bouchard-Mezard Exchange Variables
+    double J;
 
     double* entropy = new double[steps];
     double* gini = new double[steps];
 
     void dragulescuYakovenkoStep(double data[]);
-    void exchangeDragulescuYakovenko(double data[], int i, int j);
 
     void chakrabortiChakrabartiStep(double data[]);
-    void exchangeChakrabortiChakrabarti(double data[], int i, int j);
+    void bouchardMezardStep(double data[]);
 public:
     Exchanger(int size, double totalMoney, int steps = 1000, int repetitions = 1);
     void setExchangeType(ExchangeType exchangeType);
     void setToDragulescuYakovenkoExchange();
     void setToChakrabortiChakrabartiExchange(double lambda);
+    void setToBouchardMezardExchange(double J);
     void execute();
 
-    double *getMoney() const;
     double *getFinalMoney() const;
+    double *getAvMoney() const;
 
     void printArray(double data[], int lenght);
 };

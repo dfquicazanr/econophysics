@@ -39,4 +39,14 @@ This gives the Gini and Shanon Entropy of the analyzed data
 
 `$ a.exe 2 2 > file.dat`
 
+### Bouchard-Mezard exchange
+
+#### Linux
+
+`$ ./a.out 2 3 > file.dat`
+
+#### Windows
+
+`$ a.exe 2 3 > file.dat`
+
 The files generated with this exchangers can be analyzed with [Analyzer](#analyzer)

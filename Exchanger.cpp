@@ -61,15 +61,18 @@ void Exchanger::chakrabortiChakrabartiStep(double *data) {
 }
 
 void Exchanger::bouchardMezardStep(double data[]) {
-    double averageWealth = 0.0;
     int i = int((double) rand() / RAND_MAX * size);
     int j = int((double) rand() / RAND_MAX * size);
+    double averageWealth = averageMoney;
+    /*double averageWealth = 0.0;
     for (int k = 0; k < size; ++k) averageWealth += data[k];
-    averageWealth /= double(size);
-    double nu = (double) rand() / RAND_MAX - 0.5;
+    averageWealth /= double(size);*/
+    double nu = (double) rand() / RAND_MAX;
     double dm = J * (averageWealth - data[i]) + nu * data[i];
-    data[i] -= dm;
-    data[j] += dm;
+    if (data[i] - dm > 0 and data[j] + dm > 0){
+        data[i] -= dm;
+        data[j] += dm;
+    }
 }
 
 /*
@@ -86,7 +89,8 @@ void Exchanger::bouchardMezardStep(double data[]) {
             data[i] += J * (averageWealth - data[i]) + nu * data[i];
         }
     }
-}*/
+}
+*/
 
 void Exchanger::printArray(double *data, int lenght) {
     for (int i = 0; i < lenght; ++i) {
@@ -101,7 +105,6 @@ void Exchanger::execute() {
 #pragma omp for schedule(dynamic) nowait
         for (i = 0; i < repetitions; ++i) {
             double data[size];
-
             for (size_t k = 0; k < size; ++k)
                 set(data, k, get(money, k));
 

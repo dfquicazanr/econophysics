@@ -14,7 +14,8 @@ void executeSecondExercise(char* argv[]){
 }
 
 void executeThirdExercise(char* argv[]) {
-    Exchanger exchanger(1000, 1000, 100000, 10000);
+    int size = 1000, totalMoney = 1000, steps = 100000, repetitions = 10000;
+    Exchanger exchanger(size, totalMoney, steps, repetitions);
     switch (strtol(argv[2], &p, 10)){
         case 1:
             exchanger.setToDragulescuYakovenkoExchange();
@@ -56,7 +57,7 @@ void executeThirdExercise(char* argv[]) {
             break;
     }
     exchanger.execute();
-    //exchanger.printArray(exchanger.getFinalMoney(), 1000 * 10000);
+    //exchanger.printArray(exchanger.getFinalMoney(), size * repetitions);
     exchanger.printArray(exchanger.getAvMoney(), 1000);
 }
 

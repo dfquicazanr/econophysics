@@ -14,10 +14,10 @@ class Analyzer {
 private:
     int size;
     vector<double> agents;
-    double * agentsArray;
     vector<double> normalizedAccumulatedAgents;
     vector<double> data;
     vector<double> normalizedAccumulatedData;
+    vector<double> probability;
 public:
     Analyzer();
 
@@ -35,9 +35,12 @@ public:
     void setAgents();
     void setNormalizedAccumulatedData();
     void setNormalizedAccumulatedAgents();
+    void setProbability(double dm);
 
     double getGini();
     double getEntropy(int m = 10);
+
+    void printProbability(double dm);
 };
 
 

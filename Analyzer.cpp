@@ -8,12 +8,14 @@
 #include <fstream>
 #include <algorithm>
 #include <cmath>
+#include <omp.h>
 
 using namespace std;
 
 Analyzer::Analyzer() {}
 
 Analyzer::Analyzer(const vector<double> &data) : data(data) {
+    sort(Analyzer::data.begin(), Analyzer::data.end());
     size = data.size();
     setNormalizedAccumulatedData();
     setAgents();
@@ -127,7 +129,7 @@ double Analyzer::getGini() {
 double Analyzer::getEntropy(int m) {
     double entropy = 0.0;
 
-    double max = data[size - 1] * 1.000001;
+    double max = data.back() * 1.000001;
     vector<int> count(m);
     double dm = max / double(m);
     for (int i = 0; i < m; ++i) {
@@ -152,6 +154,38 @@ double Analyzer::getEntropy(int m) {
     }
 
     return entropy;
+}
+
+void Analyzer::setProbability(double dm) {
+    double max = data.back();
+    int N = int(max / dm) + 1;
+    vector<int> count(N);
+    vector<double> probability(N);
+    int i;
+#pragma omp parallel shared(count) private(i)
+    {
+#pragma omp for schedule(dynamic) nowait
+        for (i = 0; i < N; ++i) {
+            double dmin = dm * i;
+            double dmax = dm * (i + 1);
+            for (int j = 0; j < size; ++j) {
+                if (data[j] > dmin and data[j] <= dmax) {
+                    count[i] += 1;
+                }
+            }
+        }
+    }
+    for (int k = 0; k < count.size(); ++k) {
+        probability[k] = count[k] / double(size);
+    }
+
+    Analyzer::probability.swap(probability);
+}
+
+void Analyzer::printProbability(double dm) {
+
+    for (int i = 0; i < probability.size(); ++i)
+        cout << dm * (i + 0.5) << "\t" << probability[i] << endl;
 }
 
 

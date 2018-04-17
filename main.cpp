@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Analyzer.h"
 #include "Exchanger.h"
 
@@ -8,9 +9,11 @@ char *p;
 
 void executeSecondExercise(char* argv[]){
     Analyzer analyzer(argv[2]);
-    cout << "Gini: \t\t" << analyzer.getGini() << endl;
+    /*cout << "Gini: \t\t" << analyzer.getGini() << endl;
     cout << "Entropy10: \t" << analyzer.getEntropy(10) << endl;
-    cout << "Entropy20: \t" << analyzer.getEntropy(20) << endl;
+    cout << "Entropy20: \t" << analyzer.getEntropy(20) << endl;*/
+    analyzer.setProbability(0.1);
+    analyzer.printProbability(0.1);
 }
 
 void executeThirdExercise(char* argv[]) {
@@ -57,8 +60,8 @@ void executeThirdExercise(char* argv[]) {
             break;
     }
     exchanger.execute();
-    //exchanger.printArray(exchanger.getFinalMoney(), size * repetitions);
-    exchanger.printArray(exchanger.getAvMoney(), 1000);
+    exchanger.printArray(exchanger.getFinalMoney(), size * repetitions);
+    //exchanger.printArray(exchanger.getAvMoney(), size);
 }
 
 int main(int argc, char* argv[]) {
@@ -73,6 +76,5 @@ int main(int argc, char* argv[]) {
             cout << "Enter all the parameters";
             break;
     }
-
 }
 
